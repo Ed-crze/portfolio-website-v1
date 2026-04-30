@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Georgia", serif;
+  
+  --color-bg: #0A0A0A;
+  --color-fg: #E5E5E5;
+  --color-muted: rgba(255, 255, 255, 0.6);
+  --color-meta: rgba(255, 255, 255, 0.4);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.4);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-bg text-fg font-sans antialiased selection:bg-fg selection:text-bg;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-sans font-light tracking-tight;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
