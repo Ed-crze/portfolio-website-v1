@@ -6,6 +6,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, ArrowDown } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 import { CV_DATA } from './constants';
 import SectionHeader from './components/SectionHeader';
 import ProjectCard from './components/ProjectCard';
@@ -278,6 +279,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }
