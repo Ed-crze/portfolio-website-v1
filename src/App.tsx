@@ -30,14 +30,15 @@ const itemVariants = {
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading || menuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-  }, [isLoading]);
+  }, [isLoading, menuOpen]);
 
   return (
     <div className="min-h-screen selection:bg-fg selection:text-bg">
@@ -47,17 +48,54 @@ export default function App() {
 
       <AdminTools />
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-6 py-8 flex justify-between items-end pointer-events-none">
-        <div className="pointer-events-auto">
-          <span className="text-[10px] text-meta uppercase tracking-[0.2em] block mb-2">Identity / Digital</span>
+      <header className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-6 py-8 flex justify-between items-center md:items-end pointer-events-none">
+        <div className="pointer-events-auto flex flex-col items-start gap-2 md:gap-0 md:block">
+          <span className="hidden md:block text-[10px] text-meta uppercase tracking-[0.2em] md:mb-2">Identity / Digital</span>
           <a href="#" className="font-serif italic text-2xl text-white">ES. Studio&trade;</a>
         </div>
-        <nav className="pointer-events-auto flex items-center gap-10">
+        
+        <nav className="hidden md:flex pointer-events-auto items-center gap-10">
           <a href="#projects" className="text-[11px] uppercase tracking-[0.2em] text-meta border-b border-transparent hover:text-white hover:border-white transition-all">Archive</a>
           <a href="#experience" className="text-[11px] uppercase tracking-[0.2em] text-meta border-b border-transparent hover:text-white hover:border-white transition-all">Studio</a>
-          <a href="mailto:official.edwinsafo@gmail.com" className="text-[11px] uppercase tracking-[0.2em] text-meta border-b border-transparent hover:text-white hover:border-white transition-all">Contact</a>
+          <a href="#contact" className="text-[11px] uppercase tracking-[0.2em] text-meta border-b border-transparent hover:text-white hover:border-white transition-all">Contact</a>
         </nav>
+
+        <button 
+          className="md:hidden pointer-events-auto flex flex-col gap-[5px] p-2"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle Menu"
+        >
+           <div className={`w-6 h-[1px] bg-white transition-transform ${menuOpen ? 'rotate-45 translate-y-[6px]' : ''}`} />
+           <div className={`w-6 h-[1px] bg-white transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
+           <div className={`w-6 h-[1px] bg-white transition-transform ${menuOpen ? '-rotate-45 -translate-y-[6px]' : ''}`} />
+        </button>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: "-100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 bg-bg px-6 pt-24 pb-8 flex flex-col justify-start overflow-y-auto"
+          >
+            <nav className="flex flex-col gap-8 items-start mt-4">
+              <a href="#projects" onClick={() => setMenuOpen(false)} className="text-4xl font-sans font-light tracking-[-0.02em] text-white">Archive</a>
+              <a href="#experience" onClick={() => setMenuOpen(false)} className="text-4xl font-sans font-light tracking-[-0.02em] text-white">Studio</a>
+              <a href="#blog" onClick={() => setMenuOpen(false)} className="text-4xl font-sans font-light tracking-[-0.02em] text-white">Journal</a>
+              <a href="#contact" onClick={() => setMenuOpen(false)} className="text-4xl font-sans font-light tracking-[-0.02em] text-white">Contact</a>
+              <div className="w-full h-px bg-border my-4" />
+              <div className="flex flex-col gap-4">
+                <span className="text-[10px] text-meta uppercase tracking-[0.2em]">Contact details</span>
+                <a href={`mailto:${CV_DATA.email}`} className="text-lg text-muted">{CV_DATA.email}</a>
+                <a href={`tel:${CV_DATA.phone}`} className="text-lg text-muted">{CV_DATA.phone}</a>
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="px-6 pt-32 pb-24 max-w-7xl mx-auto">
         {/* Hero Section */}
